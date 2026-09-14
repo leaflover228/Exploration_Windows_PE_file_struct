@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <string>
 
-void get_file(int count_arg, char *argv[], HANDLE &file, HANDLE &mapfile, LPVOID &ptr_mapfile);
+void get_file(int count_arg, char *argv[], HANDLE &hfile, HANDLE &mapfile, LPVOID &ptr_mapfile);
 void anal_file(HANDLE file, HANDLE mapfile, LPVOID ptr_file);
 
 void read_dos_stub();

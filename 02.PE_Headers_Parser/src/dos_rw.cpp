@@ -1,21 +1,20 @@
 #include "dos_rw.hpp"
 
-void get_file(int count_arg, char *argv[], HANDLE &file, HANDLE &hfile_mapping, LPVOID &view_map) {
+void get_file(int count_arg, char *argv[], HANDLE &hfile, HANDLE &hfile_mapping, LPVOID &view_map) {
     std::string FILENAME;
 
     for (size_t id_x = 1; id_x < count_arg; id_x++) {
         FILENAME = argv[id_x];
         LPCSTR ptr_file = FILENAME.c_str();
         
-        HANDLE hfile = CreateFileA(ptr_file, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        hfile = CreateFileA(ptr_file, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
         
         if (hfile == INVALID_HANDLE_VALUE) {
             std::cerr << "Please kick yourself faggot, I hate you and your parents!\n" << GetLastError() << "\n";
             exit(EXIT_FAILURE);
         }
 
-        file = hfile;
-        hfile_mapping = CreateFileMappingA(file, nullptr, PAGE_READONLY, 0, 0, nullptr);
+        hfile_mapping = CreateFileMappingA(hfile, nullptr, PAGE_READONLY, 0, 0, nullptr);
 
         if (hfile_mapping == nullptr) {
             std::cerr << "I wanna rape your ass\n" << GetLastError() << "\n";
@@ -29,7 +28,7 @@ void get_file(int count_arg, char *argv[], HANDLE &file, HANDLE &hfile_mapping, 
             exit(EXIT_FAILURE);
         }
     }
-    std::cout << "File handle: " << file << "\n";
+    std::cout << "File handle: " << hfile << "\n";
 }
 
 void anal_file(HANDLE file, HANDLE mapfile, LPVOID ptr_file) {
