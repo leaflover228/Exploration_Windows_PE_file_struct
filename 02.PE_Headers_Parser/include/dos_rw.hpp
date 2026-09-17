@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DOS_RW_HPP
+#define DOS_RW_HPP
 
 #include <iostream>
 #include <cstdint>
@@ -6,17 +7,35 @@
 #include <windows.h>
 #include <string>
 
-void get_file(char *argv, HANDLE &hfile, HANDLE &hfile_mapping, LPVOID &view_map);
-void anal_file(HANDLE file, HANDLE mapfile, LPVOID ptr_file);
+struct PEFileContext {
+    HANDLE file = nullptr;
+    HANDLE mapfile = nullptr;
+    LPVOID ptr_mapfile = nullptr;
+    PIMAGE_DOS_HEADER magic_addr = nullptr;
+    PIMAGE_NT_HEADERS start_nt_addr = nullptr;
+};
 
-void read_dos_stub();
-void read_dos_header();
-void read_nt_headers();
+using pe = PEFileContext;
+extern pe PES;
 
-void read_data_dirs();
+namespace pe_parser {
+    void get_file(char *argv, HANDLE &hfile, HANDLE &hfile_mapping, LPVOID &view_map);
+    void anal_file(LPVOID ptr_file);
 
-void read_secticon_headers();
-void read_section_text();
-void read_section_data();
-void read_section_rdata();
-void read_section_rsrc();
+    // void read_dos_stub(const PEFileContext& ctx);
+    // void read_dos_header(const PEFileContext& ctx);
+    // void read_nt_headers(const PEFileContext& ctx);
+
+    // void read_data_dirs(const PEFileContext& ctx);
+
+    void read_number_sections(const PEFileContext& ctx);
+    void close_file_mapping(const PEFileContext& ctx);
+
+    // void read_secticon_headers(const PEFileContext& ctx);
+    // void read_section_text(const PEFileContext& ctx);
+    // void read_section_data(const PEFileContext& ctx);
+    // void read_section_rdata(const PEFileContext& ctx);
+    // void read_section_rsrc(const PEFileContext& ctx);
+}
+
+#endif

@@ -10,5 +10,5 @@ if (MSVC)
     add_compile_options(/W4 /EHsc)
 endif()
 
-add_subdirectory(01.Rewrite_DOS_Stub)
+# add_subdirectory(01.Rewrite_DOS_Stub)
 add_subdirectory(02.PE_Headers_Parser)
